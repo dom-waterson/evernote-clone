@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Editor } from "./components";
 
 import { FirebaseContext } from "./context";
 
@@ -21,13 +22,16 @@ function App() {
   }, [firebase]);
 
   return (
-    <div>
+    <div className="app-container">
       <h1>Evernote Clone!</h1>
-      <ol>
-        {notes.map((note) => (
-          <li key={note.id}>{note.title}</li>
-        ))}
-      </ol>
+      <div>
+        <ol>
+          {notes.map((note) => (
+            <li key={note.id}>{note.title}</li>
+          ))}
+        </ol>
+      </div>
+      <Editor />
     </div>
   );
 }
