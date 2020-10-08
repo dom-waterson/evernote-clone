@@ -1,20 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import styles from "./styles/sidebar";
 import List from "@material-ui/core/List";
 import { Divider, Button } from "@material-ui/core";
-import SidebarItem from "./sidebarItem";
 
-function Sidebar({
-  notes,
-  classes,
-  selectedNoteIndex,
-  newNote,
-  selectNote,
-  deleteNote,
-}) {
+import styles from "./styles/sidebar";
+import SidebarItem from "./sidebarItem";
+import { FirebaseContext } from "../../context";
+
+function Sidebar({ classes, selectNote }) {
+  const { firebase } = useContext(FirebaseContext);
+
   const [addingNote, setAddingNote] = useState(false);
   const [title, setTitle] = useState(null);
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection("notes")
+      .onSnapshot((serverUpdate) => {
+        const notes = serverUpdate.docs.map((_doc) => {
+          const data = _doc.data();
+          data["id"] = _doc.id;
+          return data;
+        });
+        setNotes(notes);
+      });
+  }, [firebase]);
 
   const newNoteBtnClick = () => {
     setTitle(null);
@@ -25,14 +37,23 @@ function Sidebar({
     setTitle(txt);
   };
 
-  const newNoteUpdate = () => {
-    newNote(title);
+  const newNoteUpdate = async () => {
+    const note = {
+      title: title,
+      body: "",
+    };
+
+    await firebase.firestore().collection("notes").add({
+      title: note.title,
+      body: note.body,
+      // timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
     setTitle(null);
     setAddingNote(false);
   };
 
   const onSelectNote = (n, i) => selectNote(n, i);
-  const onDeleteNote = (note) => deleteNote(note);
 
   return notes ? (
     <div className={classes.sidebarContainer}>
@@ -59,11 +80,9 @@ function Sidebar({
               <SidebarItem
                 _note={_note}
                 _index={_index}
-                selectedNoteIndex={selectedNoteIndex}
                 selectNote={onSelectNote}
-                deleteNote={onDeleteNote}
               ></SidebarItem>
-              <Divider></Divider>
+              <Divider />
             </div>
           );
         })}
