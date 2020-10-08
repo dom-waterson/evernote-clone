@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -8,18 +8,15 @@ import styles from "./styles/sidebarItem";
 import { FirebaseContext } from "../../context";
 import { removeHTMLTags } from "../../helpers";
 
-function SidebarItem({
-  _index,
-  _note,
-  classes,
-  selectNote,
-  selectedNoteIndex,
-}) {
+function SidebarItem({ _index, _note, classes, selectNote }) {
   const { firebase } = useContext(FirebaseContext);
+  const [selectedNoteIndex, setSelectedNoteIndex] = useState();
 
   const onDeleteNote = (note) => {
     if (window.confirm(`Are you sure you want to delete: ${note.title}`)) {
       firebase.firestore().collection("notes").doc(note.id).delete();
+      selectNote(null);
+      setSelectedNoteIndex(null);
     }
   };
 
@@ -33,7 +30,8 @@ function SidebarItem({
         <div
           className={classes.textSection}
           onClick={() => {
-            selectNote(_note, _index);
+            selectNote(_note);
+            setSelectedNoteIndex(_index);
           }}
         >
           <ListItemText

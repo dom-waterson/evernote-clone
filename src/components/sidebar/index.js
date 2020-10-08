@@ -7,7 +7,7 @@ import styles from "./styles/sidebar";
 import SidebarItem from "./sidebarItem";
 import { FirebaseContext } from "../../context";
 
-function Sidebar({ classes, selectNote, selectedNoteIndex }) {
+function Sidebar({ classes, selectNote }) {
   const { firebase } = useContext(FirebaseContext);
 
   const [addingNote, setAddingNote] = useState(false);
@@ -43,7 +43,7 @@ function Sidebar({ classes, selectNote, selectedNoteIndex }) {
       body: "",
     };
 
-    await firebase.firestore().collection("notes").add({
+    firebase.firestore().collection("notes").add({
       title: note.title,
       body: note.body,
       // timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -52,8 +52,6 @@ function Sidebar({ classes, selectNote, selectedNoteIndex }) {
     setTitle(null);
     setAddingNote(false);
   };
-
-  // const onSelectNote = (n, i) => selectNote(n, i);
 
   return notes ? (
     <div className={classes.sidebarContainer}>
@@ -80,7 +78,6 @@ function Sidebar({ classes, selectNote, selectedNoteIndex }) {
               <SidebarItem
                 _note={_note}
                 _index={_index}
-                selectedNoteIndex={selectedNoteIndex}
                 selectNote={selectNote}
               ></SidebarItem>
               <Divider />
