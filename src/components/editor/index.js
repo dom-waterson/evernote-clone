@@ -10,13 +10,15 @@ import { useDebounce } from "../../hooks";
 
 function Editor({ classes, selectedNote }) {
   const { firebase } = useContext(FirebaseContext);
-  const [note, setNote] = useState({
-    title: selectedNote.title,
-    body: selectedNote.body,
-    id: selectedNote.id,
-  });
+
+  const [note, setNote] = useState(selectedNote);
   const [firstLoad, setFirstLoad] = useState(true);
   const debouncedNote = useDebounce(note, 1500);
+
+  useEffect(() => {
+    setNote(selectedNote);
+    setFirstLoad(true);
+  }, [selectedNote]);
 
   useEffect(() => {
     if (firstLoad) {

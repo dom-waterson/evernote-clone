@@ -5,14 +5,17 @@ import "./App.css";
 
 function App() {
   const [selectedNote, setSelectedNote] = useState();
+  const [selectedNoteIndex, setSelectedNoteIndex] = useState();
 
-  function selectNote(note) {
+  function selectNote(note, id) {
+    console.log("calling", note, id);
     setSelectedNote(note);
+    setSelectedNoteIndex(id);
   }
 
   return (
     <div className="app-container">
-      <Sidebar selectNote={selectNote} />
+      <Sidebar selectNote={selectNote} selectedNoteIndex={selectedNoteIndex} />
       {selectedNote && <Editor selectedNote={selectedNote} />}
     </div>
   );
