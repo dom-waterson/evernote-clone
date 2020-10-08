@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Editor, Sidebar } from "./components";
 
+import { Editor, Sidebar } from "./components";
+import "./App.css";
 import { FirebaseContext } from "./context";
 
 function App() {
@@ -9,20 +10,17 @@ function App() {
   const [selectedNoteIndex, setSelectedNoteIndex] = useState();
   const [selectedNote, setSelectedNote] = useState();
 
-  function deleteNote() {
+  function deleteNote(note) {
     console.log("deleteNote called");
   }
 
-  function selectNote() {
-    console.log("selectNote called");
+  function selectNote(note, index) {
+    setSelectedNoteIndex(index);
+    setSelectedNote(note);
   }
 
-  function newNote() {
+  function newNote(title) {
     console.log("newNote called");
-  }
-
-  function noteUpdate() {
-    console.log("noteUpdate called");
   }
 
   useEffect(() => {
@@ -48,14 +46,7 @@ function App() {
         selectNote={selectNote}
         newNote={newNote}
       />
-      {selectedNote && (
-        <Editor
-          selectedNote={selectedNote}
-          selectedNoteIndex={selectedNoteIndex}
-          notes={notes}
-          noteUpdate={noteUpdate}
-        />
-      )}
+      {selectedNote && <Editor selectedNote={selectedNote} />}
     </div>
   );
 }
