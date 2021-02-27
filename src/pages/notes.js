@@ -1,11 +1,35 @@
+import { AppBar, Button, Toolbar, Typography, Avatar } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
 import { useAuth } from "@/lib/auth";
 
+const useStyles = makeStyles((theme) => ({
+  title: {
+    flexGrow: 1,
+  },
+  button: {
+    marginRight: theme.spacing(2),
+  },
+}));
+
 function NotesPage() {
-  const { signout } = useAuth();
+  const classes = useStyles();
+  const { signout, user } = useAuth();
+
   return (
-    <div>
-      Welcome to evernote clone! <button onClick={signout}>Sign out</button>
-    </div>
+    <AppBar>
+      <Toolbar>
+        <Typography className={classes.title} variant="h6">
+          Evernote clone
+        </Typography>
+        {user && (
+          <Button className={classes.button} onClick={signout}>
+            Sign out
+          </Button>
+        )}
+        <Avatar alt={user?.name} src={user?.photoUrl} />
+      </Toolbar>
+    </AppBar>
   );
 }
 
