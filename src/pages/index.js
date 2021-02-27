@@ -1,5 +1,13 @@
+import { useAuth } from "@/lib/auth";
+
 function HomePage() {
-  return <div>Welcome to Next.js!</div>;
+  const { signinWithGoogle } = useAuth();
+
+  return (
+    <div>
+      <button onClick={() => signinWithGoogle()}>Sign in with google</button>
+    </div>
+  );
 }
 
 export default HomePage;
