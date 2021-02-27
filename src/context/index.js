@@ -1,1 +1,0 @@
-export { FirebaseContext } from "./firebase";
