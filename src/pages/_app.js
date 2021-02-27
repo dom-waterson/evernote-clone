@@ -1,9 +1,12 @@
 import { FirebaseProvider } from "@/context/firebase";
+import { AuthProvider } from "@/lib/auth";
 
 function MyApp({ Component, pageProps }) {
   return (
     <FirebaseProvider>
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
     </FirebaseProvider>
   );
 }
