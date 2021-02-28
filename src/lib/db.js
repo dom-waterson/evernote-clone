@@ -16,11 +16,17 @@ export function createUser(uid, data) {
 }
 
 export function createNote(data) {
-  const note = firestore.collection("notes").doc();
-  note.set(data);
-  return note;
+  return firestore
+    .collection("notes")
+    .doc()
+    .set(data)
+    .then(() => data);
 }
 
 export function deleteNote(id) {
-  return firestore.collection("notes").doc(id).delete();
+  return firestore
+    .collection("notes")
+    .doc(id)
+    .delete()
+    .then(() => id);
 }

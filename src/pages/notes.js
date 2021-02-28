@@ -1,10 +1,8 @@
-import { useQuery } from "react-query";
 import { AppBar, Button, Toolbar, Typography, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { useAuth } from "@/lib/auth";
 import Sidebar from "@/components/Sidebar";
-import fetcher from "@/utils/fetcher";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -17,10 +15,11 @@ const useStyles = makeStyles((theme) => ({
 
 function NotesPage() {
   const classes = useStyles();
-  const { signout, user } = useAuth();
+  const { user, signout } = useAuth();
 
-  //TODO what if user object is empty on first pass
-  const { data } = useQuery(["notes"], () => fetcher("api/notes"));
+  if (!user) {
+    return <h1>Loading... </h1>;
+  }
 
   return (
     <>
@@ -29,15 +28,13 @@ function NotesPage() {
           <Typography className={classes.title} variant="h6">
             Evernote clone
           </Typography>
-          {user && (
-            <Button className={classes.button} onClick={signout}>
-              Sign out
-            </Button>
-          )}
-          <Avatar alt={user?.name} src={user?.photoUrl} />
+          <Button className={classes.button} onClick={signout}>
+            Sign out
+          </Button>
+          <Avatar alt={user.name} src={user.photoUrl} />
         </Toolbar>
       </AppBar>
-      <Sidebar notes={data?.notes} />
+      <Sidebar />
     </>
   );
 }
