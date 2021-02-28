@@ -1,32 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import { Divider, Button } from "@material-ui/core";
 
 import styles from "./styles/sidebar";
 import SidebarItem from "./sidebarItem";
-import { FirebaseContext } from "../../context";
+import { useAuth } from "@/lib/auth";
+import { createNote } from "@/lib/db";
 
-function Sidebar({ classes, selectNote }) {
-  const { firebase } = useContext(FirebaseContext);
-
+function Sidebar({ classes, selectNote, notes }) {
+  const { user } = useAuth();
   const [addingNote, setAddingNote] = useState(false);
   const [title, setTitle] = useState(null);
-  const [notes, setNotes] = useState([]);
-
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection("notes")
-      .onSnapshot((serverUpdate) => {
-        const notes = serverUpdate.docs.map((_doc) => {
-          const data = _doc.data();
-          data["id"] = _doc.id;
-          return data;
-        });
-        setNotes(notes);
-      });
-  }, [firebase]);
 
   const newNoteBtnClick = () => {
     setTitle(null);
@@ -37,17 +22,14 @@ function Sidebar({ classes, selectNote }) {
     setTitle(txt);
   };
 
-  const newNoteUpdate = async () => {
+  const newNoteUpdate = () => {
     const note = {
+      authorId: user.uid,
       title: title,
       body: "",
     };
 
-    firebase.firestore().collection("notes").add({
-      title: note.title,
-      body: note.body,
-      // timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+    createNote(note);
 
     setTitle(null);
     setAddingNote(false);
