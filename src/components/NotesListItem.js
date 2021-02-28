@@ -2,9 +2,9 @@ import { withStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import styles from "./styles/sidebarItem";
 import { removeHTMLTags } from "@/utils/helpers";
-import DeleteNote from "../DeleteNote";
+import DeleteNote from "@/components/DeleteNote";
+import styles from "@/styles/notesListItem";
 
 function SidebarItem({ _index, _note, classes }) {
   return (

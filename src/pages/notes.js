@@ -2,7 +2,7 @@ import { AppBar, Button, Toolbar, Typography, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { useAuth } from "@/lib/auth";
-import Sidebar from "@/components/Sidebar";
+import NotesList from "@/components/NotesList";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -34,7 +34,7 @@ function NotesPage() {
           <Avatar alt={user.name} src={user.photoUrl} />
         </Toolbar>
       </AppBar>
-      <Sidebar />
+      <NotesList />
     </>
   );
 }

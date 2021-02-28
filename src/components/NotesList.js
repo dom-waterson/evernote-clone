@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import { Divider, Button } from "@material-ui/core";
 
-import styles from "./styles/sidebar";
-import SidebarItem from "./sidebarItem";
+import styles from "@/styles/notesList";
 import { useAuth } from "@/lib/auth";
 import fetcher from "@/utils/fetcher";
-import AddNote from "../AddNote";
+import AddNote from "@/components/AddNote";
+import NotesListItem from "@/components/NotesListItem";
 
 function Sidebar({ classes, selectNote }) {
   const { user } = useAuth();
@@ -34,11 +34,11 @@ function Sidebar({ classes, selectNote }) {
         {data.notes.map((_note, _index) => {
           return (
             <div key={_index}>
-              <SidebarItem
+              <NotesListItem
                 _note={_note}
                 _index={_index}
                 selectNote={selectNote}
-              ></SidebarItem>
+              ></NotesListItem>
               <Divider />
             </div>
           );
