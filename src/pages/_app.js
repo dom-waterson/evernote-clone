@@ -5,6 +5,8 @@ import { AuthProvider } from "@/lib/auth";
 
 const queryClient = new QueryClient();
 
+import "@/styles/App.css";
+
 function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>

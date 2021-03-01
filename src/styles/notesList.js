@@ -28,7 +28,7 @@ const styles = (theme) => ({
     },
   },
   sidebarContainer: {
-    marginTop: "63px",
+    marginTop: "0",
     width: "300px",
     height: "100%",
     boxSizing: "border-box",

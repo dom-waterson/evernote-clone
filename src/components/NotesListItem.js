@@ -6,10 +6,14 @@ import { removeHTMLTags } from "@/utils/helpers";
 import DeleteNote from "@/components/DeleteNote";
 import styles from "@/styles/notesListItem";
 
-function SidebarItem({ _index, _note, classes }) {
+function SidebarItem({ _index, _note, classes, setSelectedNote }) {
   return (
     <div key={_index}>
-      <ListItem className={classes.listItem} alignItems="flex-start">
+      <ListItem
+        className={classes.listItem}
+        alignItems="flex-start"
+        onClick={() => setSelectedNote(_note)}
+      >
         <div className={classes.textSection}>
           <ListItemText
             primary={_note.title}

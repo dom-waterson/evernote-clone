@@ -16,11 +16,8 @@ export function createUser(uid, data) {
 }
 
 export function createNote(data) {
-  return firestore
-    .collection("notes")
-    .doc()
-    .set(data)
-    .then(() => data);
+  const site = firestore.collection("notes").doc();
+  return site.set(data).then(() => ({ id: site.id, ...data }));
 }
 
 export function deleteNote(id) {
@@ -29,4 +26,12 @@ export function deleteNote(id) {
     .doc(id)
     .delete()
     .then(() => id);
+}
+
+export function updateNote(newValues) {
+  return firestore
+    .collection("notes")
+    .doc(newValues.id)
+    .update(newValues)
+    .then(() => newValues);
 }

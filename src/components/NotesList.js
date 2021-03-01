@@ -10,7 +10,7 @@ import fetcher from "@/utils/fetcher";
 import AddNote from "@/components/AddNote";
 import NotesListItem from "@/components/NotesListItem";
 
-function Sidebar({ classes, selectNote }) {
+function Sidebar({ classes, setSelectedNote }) {
   const { user } = useAuth();
   const [addingNote, setAddingNote] = useState(false);
   const [title, setTitle] = useState(null);
@@ -37,7 +37,7 @@ function Sidebar({ classes, selectNote }) {
               <NotesListItem
                 _note={_note}
                 _index={_index}
-                selectNote={selectNote}
+                setSelectedNote={setSelectedNote}
               ></NotesListItem>
               <Divider />
             </div>
