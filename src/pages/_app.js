@@ -1,16 +1,20 @@
 import { CssBaseline } from "@material-ui/core";
+import { QueryClient, QueryClientProvider } from "react-query";
 
-import { FirebaseProvider } from "@/context/firebase";
 import { AuthProvider } from "@/lib/auth";
+
+const queryClient = new QueryClient();
+
+import "@/styles/App.css";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <FirebaseProvider>
-      <AuthProvider>
-        <CssBaseline />
+    <AuthProvider>
+      <CssBaseline />
+      <QueryClientProvider client={queryClient}>
         <Component {...pageProps} />
-      </AuthProvider>
-    </FirebaseProvider>
+      </QueryClientProvider>
+    </AuthProvider>
   );
 }
 

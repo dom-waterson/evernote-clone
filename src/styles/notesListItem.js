@@ -1,6 +1,9 @@
 const styles = () => ({
   listItem: {
     cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   textSection: {
     maxWidth: "85%",
