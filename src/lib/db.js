@@ -16,8 +16,13 @@ export function createUser(uid, data) {
 }
 
 export function createNote(data) {
-  const site = firestore.collection("notes").doc();
-  return site.set(data).then(() => ({ id: site.id, ...data }));
+  const note = firestore.collection("notes").doc();
+  return note
+    .set({
+      ...data,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(() => ({ id: note.id, ...data }));
 }
 
 export function deleteNote(id) {
@@ -32,6 +37,9 @@ export function updateNote(newValues) {
   return firestore
     .collection("notes")
     .doc(newValues.id)
-    .update(newValues)
+    .update({
+      ...newValues,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    })
     .then(() => newValues);
 }
