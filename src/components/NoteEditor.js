@@ -25,11 +25,15 @@ function Editor({ classes }) {
 
   const updateNoteMutation = useMutation((note) => updateNote(note), {
     onSuccess: (data) => {
-      queryClient.setQueryData(["notes", user.token], (oldData) => ({
-        notes: oldData.notes.map((cachedNote) =>
-          cachedNote.id === data.id ? { ...cachedNote, ...data } : cachedNote
-        ),
-      }));
+      queryClient.setQueryData(["notes", user.token], (oldData) => {
+        const updatedNotes = oldData.notes.filter(
+          (cachedNote) => cachedNote.id !== data.id
+        );
+
+        updatedNotes.unshift(data);
+
+        return { notes: updatedNotes };
+      });
     },
   });
 

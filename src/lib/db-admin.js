@@ -4,6 +4,7 @@ export async function getUserNotes(uid) {
   const snapshot = await db
     .collection("notes")
     .where("authorId", "==", uid)
+    .orderBy("timestamp", "desc")
     .get();
 
   const notes = [];
