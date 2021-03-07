@@ -1,4 +1,5 @@
 import { Box, Button, Container, SvgIcon, Typography } from "@material-ui/core";
+import Head from "next/head";
 
 import { useAuth } from "@/lib/auth";
 
@@ -32,22 +33,35 @@ function HomePage() {
   const { signinWithGoogle } = useAuth();
 
   return (
-    <Container maxWidth="sm">
-      <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Welcome to Evernote Clone
-        </Typography>
+    <>
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (document.cookie && document.cookie.includes('evernote-clone-auth')) {
+                window.location.href = "/notes"
+              }
+            `,
+          }}
+        />
+      </Head>
+      <Container maxWidth="sm">
+        <Box my={4}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Welcome to Evernote Clone
+          </Typography>
 
-        <Button
-          startIcon={<GoogleIcon />}
-          variant="contained"
-          color="primary"
-          onClick={() => signinWithGoogle()}
-        >
-          Sign in with google
-        </Button>
-      </Box>
-    </Container>
+          <Button
+            startIcon={<GoogleIcon />}
+            variant="contained"
+            color="primary"
+            onClick={() => signinWithGoogle()}
+          >
+            Sign in with google
+          </Button>
+        </Box>
+      </Container>
+    </>
   );
 }
 
