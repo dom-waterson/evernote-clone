@@ -5,22 +5,25 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { removeHTMLTags } from "@/utils/helpers";
 import DeleteNote from "@/components/DeleteNote";
 import styles from "@/styles/notesListItem";
+import { useSelectedNote } from "@/context/selectedNote";
 
-function SidebarItem({ _index, _note, classes, setSelectedNote }) {
+function SidebarItem({ note, classes }) {
+  const { setSelectedNote, selectedNote } = useSelectedNote();
   return (
-    <div key={_index}>
+    <div>
       <ListItem
         className={classes.listItem}
         alignItems="flex-start"
-        onClick={() => setSelectedNote(_note)}
+        onClick={() => setSelectedNote(note)}
+        selected={selectedNote?.id === note.id}
       >
         <div className={classes.textSection}>
           <ListItemText
-            primary={_note.title}
-            secondary={removeHTMLTags(_note.body.substring(0, 30)) + "..."}
+            primary={note.title}
+            secondary={removeHTMLTags(note.body.substring(0, 30)) + "..."}
           ></ListItemText>
         </div>
-        <DeleteNote note={_note} />
+        <DeleteNote note={note} />
       </ListItem>
     </div>
   );

@@ -9,8 +9,10 @@ import styles from "@/styles/noteEditor";
 import { useDebounce } from "@/hooks/useDebounce";
 import { updateNote } from "@/lib/db";
 import { useAuth } from "@/lib/auth";
+import { useSelectedNote } from "@/context/selectedNote";
 
-function Editor({ classes, selectedNote }) {
+function Editor({ classes }) {
+  const { selectedNote } = useSelectedNote();
   const [title, setTitle] = useState(selectedNote.title);
   const [body, setBody] = useState(selectedNote.body);
   const [id, setId] = useState(selectedNote.id);

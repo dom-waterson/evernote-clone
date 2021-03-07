@@ -10,17 +10,15 @@ import fetcher from "@/utils/fetcher";
 import AddNote from "@/components/AddNote";
 import NotesListItem from "@/components/NotesListItem";
 
-function Sidebar({ classes, setSelectedNote }) {
+function Sidebar({ classes }) {
   const { user } = useAuth();
   const [addingNote, setAddingNote] = useState(false);
-  const [title, setTitle] = useState(null);
 
   const { data } = useQuery(["notes", user.token], () =>
     fetcher("api/notes", user.token)
   );
 
   const newNoteBtnClick = () => {
-    setTitle(null);
     setAddingNote((addingNote) => !addingNote);
   };
 
@@ -31,14 +29,10 @@ function Sidebar({ classes, setSelectedNote }) {
       </Button>
       {addingNote && <AddNote />}
       <List>
-        {data.notes.map((_note, _index) => {
+        {data.notes.map((note) => {
           return (
-            <div key={_index}>
-              <NotesListItem
-                _note={_note}
-                _index={_index}
-                setSelectedNote={setSelectedNote}
-              ></NotesListItem>
+            <div key={note.id}>
+              <NotesListItem note={note} />
               <Divider />
             </div>
           );

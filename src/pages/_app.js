@@ -2,6 +2,7 @@ import { CssBaseline } from "@material-ui/core";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import { AuthProvider } from "@/lib/auth";
+import { SelectedNoteProvider } from "@/context/selectedNote";
 
 const queryClient = new QueryClient();
 
@@ -12,7 +13,9 @@ function MyApp({ Component, pageProps }) {
     <AuthProvider>
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <SelectedNoteProvider>
+          <Component {...pageProps} />
+        </SelectedNoteProvider>
       </QueryClientProvider>
     </AuthProvider>
   );

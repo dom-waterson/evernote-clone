@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Head from "next/head";
 
 import { AppBar, Button, Toolbar, Typography, Avatar } from "@material-ui/core";
@@ -7,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useAuth } from "@/lib/auth";
 import NotesList from "@/components/NotesList";
 import NoteEditor from "@/components/NoteEditor";
+import { useSelectedNote } from "@/context/selectedNote";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NotesPage() {
-  const [selectedNote, setSelectedNote] = useState();
+  const { selectedNote } = useSelectedNote();
 
   const classes = useStyles();
   const { user, signout } = useAuth();
@@ -50,13 +50,8 @@ function NotesPage() {
             </Toolbar>
           </AppBar>
           <div style={{ marginTop: "64px", height: "100vh" }}>
-            <NotesList setSelectedNote={setSelectedNote} />
-            {selectedNote && (
-              <NoteEditor
-                selectedNote={selectedNote}
-                setSelectedNote={setSelectedNote}
-              />
-            )}
+            <NotesList />
+            {selectedNote && <NoteEditor />}
           </div>
         </>
       ) : (
