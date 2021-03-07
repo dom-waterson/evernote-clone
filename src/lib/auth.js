@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, createContext } from "react";
-
+import cookie from "js-cookie";
 import Router from "next/router";
 
 import firebase from "./firebase";
@@ -28,11 +28,17 @@ function useProvideAuth() {
 
       setUser(user);
 
+      cookie.set("evernote-clone-auth", true, {
+        expires: 1,
+      });
+
       Router.push("/notes");
 
       return user;
     } else {
       Router.push("/");
+
+      cookie.remove("evernote-clone-auth");
 
       setUser(false);
 
