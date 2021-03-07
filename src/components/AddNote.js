@@ -4,18 +4,23 @@ import { Button } from "@material-ui/core";
 
 import { useAuth } from "@/lib/auth";
 import { createNote } from "@/lib/db";
+import { useSelectedNote } from "@/context/selectedNote";
 
 function AddNote() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { setSelectedNote } = useSelectedNote();
 
   const [title, setTitle] = useState();
 
   const newNoteMutation = useMutation((note) => createNote(note), {
     onSuccess: (data) => {
-      queryClient.setQueryData(["notes", user.token], (oldData) => ({
-        notes: [data, ...oldData.notes],
-      }));
+      queryClient.setQueryData(["notes", user.token], (oldData) => {
+        setSelectedNote(data);
+        return {
+          notes: [data, ...oldData.notes],
+        };
+      });
     },
   });
 
