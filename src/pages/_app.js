@@ -1,5 +1,6 @@
 import { CssBaseline } from "@material-ui/core";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 import { AuthProvider } from "@/lib/auth";
 import { SelectedNoteProvider } from "@/context/selectedNote";
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }) {
     <AuthProvider>
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools />
         <SelectedNoteProvider>
           <Component {...pageProps} />
         </SelectedNoteProvider>

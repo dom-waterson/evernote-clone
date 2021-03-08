@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 import { withStyles } from "@material-ui/core/styles";
+import Input from "@material-ui/core/Input";
 
 import styles from "@/styles/noteEditor";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -53,12 +54,15 @@ function Editor({ classes }) {
 
   return (
     <div className={classes.editorContainer}>
-      <input
+      <Input
         className={classes.titleInput}
         placeholder="Note title..."
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      ></input>
+        onChange={(e) => {
+          console.log("changed");
+          setTitle(e.target.value);
+        }}
+      />
       <ReactQuill value={body} onChange={(body) => setBody(body)} />
     </div>
   );

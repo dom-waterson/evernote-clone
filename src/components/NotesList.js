@@ -27,7 +27,7 @@ function Sidebar({ classes }) {
       <Button onClick={newNoteBtnClick} className={classes.newNoteBtn}>
         {addingNote ? "Cancel" : "New Note"}
       </Button>
-      {addingNote && <AddNote />}
+      {addingNote && <AddNote setAddingNote={setAddingNote} />}
       <List>
         {data.notes.map((note) => {
           return (
