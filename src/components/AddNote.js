@@ -30,7 +30,7 @@ function AddNote({ setAddingNote }) {
     const note = {
       authorId: user.uid,
       title: title,
-      body: "",
+      body: "<p><br><p>",
     };
 
     newNoteMutation.mutate(note);

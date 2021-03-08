@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import dynamic from "next/dynamic";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
@@ -7,10 +7,10 @@ import { withStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 
 import styles from "@/styles/noteEditor";
-import { useDebounce } from "@/hooks/useDebounce";
 import { updateNote } from "@/lib/db";
 import { useAuth } from "@/lib/auth";
 import { useSelectedNote } from "@/context/selectedNote";
+import { debounce } from "@/utils/helpers";
 
 function Editor({ classes }) {
   const { selectedNote } = useSelectedNote();
@@ -18,8 +18,18 @@ function Editor({ classes }) {
   const [body, setBody] = useState(selectedNote.body);
   const [id, setId] = useState(selectedNote.id);
 
-  const titleDebounce = useDebounce(title, 1500);
-  const bodyDebounce = useDebounce(body, 1500);
+  const updateDB = useCallback(
+    debounce(
+      (title, body, id) =>
+        updateNoteMutation.mutate({
+          title,
+          body,
+          id,
+        }),
+      1500
+    ),
+    []
+  );
 
   const queryClient = useQueryClient();
   const { user } = useAuth();
@@ -45,12 +55,10 @@ function Editor({ classes }) {
   }, [selectedNote]);
 
   useEffect(() => {
-    updateNoteMutation.mutate({
-      title,
-      body,
-      id,
-    });
-  }, [titleDebounce, bodyDebounce]);
+    if (title !== selectedNote.title || body !== selectedNote.body) {
+      updateDB(title, body, id);
+    }
+  }, [title, body]);
 
   return (
     <div className={classes.editorContainer}>
@@ -58,10 +66,7 @@ function Editor({ classes }) {
         className={classes.titleInput}
         placeholder="Note title..."
         value={title}
-        onChange={(e) => {
-          console.log("changed");
-          setTitle(e.target.value);
-        }}
+        onChange={(e) => setTitle(e.target.value)}
       />
       <ReactQuill value={body} onChange={(body) => setBody(body)} />
     </div>
